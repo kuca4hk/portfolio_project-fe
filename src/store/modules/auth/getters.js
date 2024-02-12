@@ -1,9 +1,9 @@
 export default {
     userName(state){
-        return state.name
+        return state.name + ' ' + state.lastName
     },
     address(state){
-        return state.adress + ' ' + state.city + ' ' + state.zipcode
+        return state.address + ', ' + state.city + ', ' + state.zipcode
     },
     role(state){
         return state.role
@@ -16,6 +16,9 @@ export default {
     },
     token(state){
         return state.token
+    },
+    email(state){
+        return state.email
     }
 
 }

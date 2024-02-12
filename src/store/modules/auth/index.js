@@ -8,7 +8,7 @@ export default {
             isSuperuser: null,
             email: null,
             name: null,
-            lastname: null,
+            lastName: null,
             isActive: null,
             adress: null,
             city: null,

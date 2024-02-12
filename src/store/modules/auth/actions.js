@@ -54,5 +54,103 @@ export default {
                 token: token
             })
         }
+    },
+    async getUserData(context){
+        const basicAuth = localStorage.getItem('token')
+        const userId = localStorage.getItem('id')
+        const response = await axios.get(`${process.env.VUE_APP_APIURL}users/user-information/${userId}/`,{
+            headers: {
+                'Authorization': `Basic ${basicAuth}`,
+            }
+        })
+
+        context.commit('setData', {
+            isSuperuser: response.data.is_superuser,
+            name: response.data.first_name,
+            lastName: response.data.last_name,
+            email: response.data.email,
+            isActive: response.data.is_active,
+            address: response.data.adress,
+            city: response.data.city,
+            zipcode: response.data.zip_code,
+            role: response.data.role,
+        })
+    },
+    async signout(context){
+        const basicAuth = localStorage.getItem('token')
+        const response = await axios.post(`${process.env.VUE_APP_APIURL}users/logout/`,{
+            user: basicAuth
+        }, {
+            headers: {
+                'Authorization': `Basic ${basicAuth}`,
+            }
+        })
+
+        console.log(response)
+
+
+        localStorage.removeItem('token')
+        localStorage.removeItem('id')
+        context.commit('setUser', {
+            userId: null,
+            token: null
+        })
+
+        context.commit('setData', {
+            isSuperuser: null,
+            name: null,
+            lastName:null,
+            email: null,
+            isActive: null,
+            address: null,
+            city: null,
+            zipcode: null,
+            role: null
+        })
+
+    },
+    async updatePassword(context, payload){
+        const basicAuth = localStorage.getItem('token')
+        await axios.post(`${process.env.VUE_APP_APIURL}users/change-password/`,{
+            new_password: payload.new_password,
+            confirm_new_password: payload.confirm_new_password
+        }, {
+            headers: {
+                'Authorization': `Basic ${basicAuth}`,
+            }
+        })
+
+
+        console.log("Heslo uspesne zmeneno")
+    },
+    async registerUser(context, payload){
+        await axios.post(`${process.env.VUE_APP_APIURL}users/registration/`, {
+            first_name: payload.firstName,
+            last_name: payload.lastName,
+            email: payload.email,
+            password: payload.password,
+            adress: payload.adress,
+            city: payload.city,
+            zip_code: payload.zipCode,
+        })
+    },
+
+    async registerUserToCourse(context, payload){
+        await axios.post(`${process.env.VUE_APP_APIURL}courses/users-course-registry/${payload.idCourse}/`, {
+            users: payload.user
+        }, {
+            headers: {
+                'Authorization': `Basic ${localStorage.getItem('token')}`,
+            }
+        })
+    },
+    async signoutUserFromCourse(context,payload){
+        await axios.put(`${process.env.VUE_APP_APIURL}courses/users-course-registry/${payload.idCourse}/`, {
+            users: payload.user
+        }, {
+            headers: {
+                'Authorization': `Basic ${localStorage.getItem('token')}`,
+            }
+        })
     }
 }

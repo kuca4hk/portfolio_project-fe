@@ -1,13 +1,14 @@
 <template>
-<li>
-  <h3>{{name}}</h3>
-  <h4>{{price}} Kč</h4>
-  <div>
-    <base-badge v-for="area in category" :key="area" :title="area" :type="area"></base-badge>
-  </div>
-  <div class="actions">
-    <base-button :link="true" :to="courseDetailLink">View Details</base-button>
-  </div>
+  <li>
+    <h3>{{name}}</h3>
+    <h4>{{price}} Kč</h4>
+    <div>
+      <base-badge v-for="area in category" :key="area" :title="area" :type="area"></base-badge>
+    </div>
+    <div class="actions">
+      <base-button :link="true" :to="courseEditLink" mode="outline" >Edit Course</base-button>
+      <base-button :link="true" :to="courseDetailLink">View Details</base-button>
+    </div>
   </li>
 </template>
 
@@ -16,8 +17,8 @@
 export default {
   props:['id', 'name', 'price', 'category', 'createdBy', 'date-created', 'date-update'],
   computed: {
-    courseRegistrLink(){
-      return `/course/${this.id}/register`
+    courseEditLink(){
+      return `/course/edit/${this.id}`
     },
     courseDetailLink(){
       return `/course/${this.id}`

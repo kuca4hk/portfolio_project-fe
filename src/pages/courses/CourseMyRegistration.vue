@@ -6,7 +6,7 @@
           <base-spinner/>
         </div>
         <ul v-else-if="hasCourses">
-          <course-item v-for="course in courses"
+          <CourseItemMyRegistration v-for="course in courses"
                        :key="course.id"
                        :id="course.id"
                        :name="course.name"
@@ -16,7 +16,7 @@
                        :date-created="course.date_created"
                        :date-update="course.date_update">
 
-          </course-item>
+          </CourseItemMyRegistration>
         </ul>
         <h3 v-else>No Courses here</h3>
       </base-card>
@@ -25,17 +25,17 @@
 </template>
 
 <script>
-import CourseItem from "@/componenets/courses/CourseItem.vue";
+import CourseItemMyRegistration from "@/componenets/courses/CourseItemMyRegistration.vue";
 import BaseSpinner from "@/componenets/UI/BaseSpinner.vue";
 export default {
-  components: {
-    BaseSpinner,
-    CourseItem,
-  },
   data(){
     return{
-      isLoading: false,
+      isLoading: false
     }
+  },
+  components: {
+    BaseSpinner,
+    CourseItemMyRegistration
   },
   computed: {
     courses(){
@@ -51,23 +51,13 @@ export default {
   methods: {
     async loadCoaches(){
       this.isLoading = true
-      await this.$store.dispatch('courses/getCourses')
+      await this.$store.dispatch('courses/myCourseRegistry')
       this.isLoading = false
     }
   }
 }
-
 </script>
 
-<style>
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+<style scoped>
 
-.controls {
-  display: flex;
-  justify-content: space-between;
-}
 </style>

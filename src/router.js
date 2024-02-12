@@ -5,7 +5,11 @@ import Dashboard from "@/pages/courses/CourseList.vue";
 import store from '@/store/index'
 import UserDetail from "@/pages/Auth/UserDetail.vue";
 import CourseDetail from "@/pages/courses/CourseDetail.vue";
-import CourseRegistration from "@/componenets/courses/CourseRegistration.vue";
+import UserSignUp from "@/pages/Auth/UserSignUp.vue";
+import CourseCreate from "@/pages/courses/CourseCreate.vue";
+import CourseListMy from "@/pages/courses/CourseListMy.vue";
+import CourseUpdate from "@/pages/courses/CourseUpdate.vue";
+import CourseMyRegistration from "@/pages/courses/CourseMyRegistration.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -26,25 +30,53 @@ const router = createRouter({
             path: '/course/:id',
             component: CourseDetail,
             props: true,
-            children: [
-                {
-                    path: 'register',
-                    component: CourseRegistration,
-                    meta: {
-                        requiresAuth: true
-                    }
-                }
-            ],
             meta:{
                 requiresAuth: true
             },
         },
         {
-            path: '/auth',
+            path: '/mycourses-registration',
+            component: CourseMyRegistration,
+            meta: {
+                requiresAuth: true
+            },
+        },
+        {
+            path: '/signin',
             component: UserAuth,
             meta: {
                 requiresUnAuth: true
             }
+        },
+        {
+          path: '/signup',
+          component: UserSignUp,
+          meta: {
+              requiresUnAuth: true
+          }
+        },
+        {
+            path: '/createcourse',
+            component: CourseCreate,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/mycourses',
+            component: CourseListMy,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/course/edit/:id',
+            component: CourseUpdate,
+            props: true,
+            meta:{
+                requiresAuth: true
+            },
+
         },
         {
             path: '/profile',
@@ -64,7 +96,7 @@ const router = createRouter({
 })
 router.beforeEach(function (to,_,next){
     if(to.meta.requiresAuth && !store.getters.isAuthenticated){
-        next('/auth')
+        next('/signin')
     } else if(to.meta.requiresUnAuth && store.getters.isAuthenticated){
         next('/dashboard')
     } else {

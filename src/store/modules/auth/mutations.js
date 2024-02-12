@@ -2,7 +2,7 @@ export default {
     setData(state, payload){
         state.isSuperuser = payload.isSuperuser
         state.name = payload.name
-        state.lastname = payload.lastname
+        state.lastName = payload.lastName
         state.email = payload.email
         state.isActive = payload.isActive
         state.address = payload.address
